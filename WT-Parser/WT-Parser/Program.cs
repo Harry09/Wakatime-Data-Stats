@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace WT_Parser
+namespace WTParser
 {
     class Program
     {
