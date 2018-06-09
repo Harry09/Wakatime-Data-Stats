@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace WTParser.Data
 {
     class WTData
-    {
+	{
 		[JsonProperty("days")]
 		public List<Day> Days { get; set; }
 	}
