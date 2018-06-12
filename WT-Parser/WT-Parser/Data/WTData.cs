@@ -10,5 +10,11 @@ namespace WTParser.Data
 	{
 		[JsonProperty("days")]
 		public List<Day> Days { get; set; }
+
+		[JsonProperty("range")]
+		public Range Range { get; set; }
+
+		[JsonProperty("user")]
+		public User User { get; set; }
 	}
 }
