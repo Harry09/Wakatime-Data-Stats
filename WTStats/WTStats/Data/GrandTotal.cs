@@ -21,7 +21,7 @@ namespace WTStats.Data
 		[JsonProperty("total_seconds")]
 		public long TotalSeconds { get; set; }
 
-		public string ToString()
+		public override string ToString()
 		{
 			var ts = TimeSpan.FromSeconds(TotalSeconds);
 
