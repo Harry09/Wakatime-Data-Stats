@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace WTParser.Data
 {
-    class Data
+    public class Data
     {
 		[JsonProperty("digital")]
 		public string Digital { get; set; }

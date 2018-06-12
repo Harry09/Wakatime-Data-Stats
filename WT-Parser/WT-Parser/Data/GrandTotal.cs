@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 using Newtonsoft.Json;
 
 namespace WTParser.Data
 {
-    class GrandTotal
+    public class GrandTotal
     {
 		[JsonProperty("digital")]
 		public string Digital { get; set; }

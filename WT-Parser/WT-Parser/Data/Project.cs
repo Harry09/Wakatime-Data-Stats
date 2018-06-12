@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace WTParser.Data
 {
-    class Project
+    public class Project
     {
 		[JsonProperty("branches")]
 		public List<Data> Branches { get; set; }

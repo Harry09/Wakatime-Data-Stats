@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Newtonsoft.Json;
 
 namespace WTParser.Data
 {
-    class Day
+    public class Day
     {
 		[JsonProperty("categories")]
 		public List<Data> Categories { get; set; }
