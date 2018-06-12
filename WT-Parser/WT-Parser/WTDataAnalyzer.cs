@@ -30,6 +30,10 @@ namespace WTParser
     {
 		Data.WTData _wtData;
 
+		public DateTime StartDate { get; set; }
+
+		public DateTime EndDate { get; set; }
+
 		public enum DataType
 		{
 			Dependencies,
@@ -39,7 +43,13 @@ namespace WTParser
 			Categories
 		}
 
-		public WTDataAnalyzer(string path)
+		private WTDataAnalyzer()
+		{
+			StartDate = DateTime.MinValue;
+			EndDate = DateTime.MaxValue;
+		}
+
+		public WTDataAnalyzer(string path) : this()
 		{
 			if (!File.Exists(path))
 				throw new FileNotFoundException(path);
@@ -49,7 +59,7 @@ namespace WTParser
 			_wtData = JsonConvert.DeserializeObject<Data.WTData>(json);
 		}
 
-		public WTDataAnalyzer(Data.WTData wtData)
+		public WTDataAnalyzer(Data.WTData wtData) : this()
 		{
 			_wtData = wtData;
 		}
@@ -68,14 +78,20 @@ namespace WTParser
 		{
 			long total = 0;
 
-			_wtData.Days.ForEach(x => total += x.GrandTotal.TotalSeconds);
+			foreach (var day in _wtData.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate))
+			{
+				total += day.GrandTotal.TotalSeconds;
+			}
 
 			return TimeSpan.FromSeconds(total);
 		}
 
 		public Data.Day GetBestDay()
 		{
-			Data.Day bestDay = _wtData.Days.OrderByDescending(x => x.GrandTotal.TotalSeconds).First();
+			Data.Day bestDay = _wtData.Days
+				.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate)
+				.OrderByDescending(x => x.GrandTotal.TotalSeconds).First();
+
 			return bestDay;
 		}
 
@@ -83,7 +99,7 @@ namespace WTParser
 		{
 			var projects = new List<Project>();
 
-			_wtData.Days.ForEach(eDay => 
+			foreach (var eDay in _wtData.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate))
 			{
 				eDay.Projects.ForEach(eProject =>
 				{
@@ -108,7 +124,7 @@ namespace WTParser
 						projects.Add(lProject);
 					}
 				});
-			});
+			}
 
 			return projects;
 		}
@@ -117,7 +133,7 @@ namespace WTParser
 		{
 			var data = new List<ProjectData>();
 
-			foreach (var eDay in _wtData.Days)
+			foreach (var eDay in _wtData.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate))
 			{
 				var property = eDay.GetType().GetProperty(dataType.ToString());
 
