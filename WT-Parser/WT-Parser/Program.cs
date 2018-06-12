@@ -6,7 +6,9 @@ namespace WTParser
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+			var wtDataAnalyzer = new WTDataAnalyzer("data.json");
+
+			Console.ReadKey();
         }
     }
 }
