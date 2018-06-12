@@ -1,8 +1,10 @@
 using Newtonsoft.Json;
 
-namespace WTParser.Data
+using System;
+
+namespace WTStats.Data
 {
-    public class Data
+    public class GrandTotal
     {
 		[JsonProperty("digital")]
 		public string Digital { get; set; }
@@ -13,19 +15,17 @@ namespace WTParser.Data
 		[JsonProperty("minutes")]
 		public long Minutes { get; set; }
 
-		[JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-		public string Name { get; set; }
-
-		[JsonProperty("percent")]
-		public double Percent { get; set; }
-
-		[JsonProperty("seconds", NullValueHandling = NullValueHandling.Ignore)]
-		public long? Seconds { get; set; }
-
 		[JsonProperty("text")]
 		public string Text { get; set; }
 
 		[JsonProperty("total_seconds")]
 		public long TotalSeconds { get; set; }
+
+		public string ToString()
+		{
+			var ts = TimeSpan.FromSeconds(TotalSeconds);
+
+			return ts.ToString();
+		}
 	}
 }

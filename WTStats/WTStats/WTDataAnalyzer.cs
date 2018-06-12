@@ -6,7 +6,7 @@ using System.IO;
 
 using Newtonsoft.Json;
 
-namespace WTParser
+namespace WTStats
 {
 	class ProjectData
 	{

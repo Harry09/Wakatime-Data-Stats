@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace WTParser.Data
+namespace WTStats.Data
 {
 	public class Range
 	{
