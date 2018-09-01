@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace WTStats.Data
 {
-    public class WTData
+    public class DataCore
 	{
 		[JsonProperty("days")]
 		public List<Day> Days { get; set; }

@@ -8,28 +8,11 @@ using Newtonsoft.Json;
 
 namespace WTStats
 {
-	class ProjectData
-	{
-		public string Name { get; set; }
-
-		public long TotalTime { get; set; }
-	}
-
-	class Project
-	{
-		public string Name { get; set; }
-
-		public long TotalTime { get; set; }
-
-		public List<ProjectData> Languages { get; set; }
-
-		public List<ProjectData> Editors { get; set; }
-	}
-
-    class WTDataAnalyzer
+	public class WTDataAnalyzer
     {
-		Data.WTData _wtData;
+		Data.DataCore _dataCore;
 
+		#region Public fields
 		public DateTime StartDate { get; set; }
 
 		public DateTime EndDate { get; set; }
@@ -42,7 +25,9 @@ namespace WTStats
 			OperatingSystems,
 			Categories
 		}
+		#endregion
 
+		#region Constructors
 		private WTDataAnalyzer()
 		{
 			StartDate = DateTime.MinValue;
@@ -56,41 +41,39 @@ namespace WTStats
 
 			var json = File.ReadAllText(path);
 
-			_wtData = JsonConvert.DeserializeObject<Data.WTData>(json);
+			_dataCore = JsonConvert.DeserializeObject<Data.DataCore>(json);
 		}
 
-		public WTDataAnalyzer(Data.WTData wtData) : this()
+		public WTDataAnalyzer(Data.DataCore wtData) : this()
 		{
-			_wtData = wtData;
+			_dataCore = wtData;
 		}
+		#endregion
 
+		#region Public methods
 		public DateTime GetStartDate()
 		{
-			return DateTimeOffset.FromUnixTimeSeconds(_wtData.Range.Start).DateTime;
+			return DateTimeOffset.FromUnixTimeSeconds(_dataCore.Range.Start).DateTime;
 		}
 
 		public DateTime GetEndDate()
 		{
-			return DateTimeOffset.FromUnixTimeSeconds(_wtData.Range.End).DateTime;
+			return DateTimeOffset.FromUnixTimeSeconds(_dataCore.Range.End).DateTime;
 		}
 
 		public TimeSpan GetTotalTimeCoding()
 		{
-			long total = 0;
-
-			foreach (var day in _wtData.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate))
+			var total = GetDaysInTimeRange().Sum((Data.Day day) =>
 			{
-				total += day.GrandTotal.TotalSeconds;
-			}
+				return day.GrandTotal.TotalSeconds;
+			});
 
 			return TimeSpan.FromSeconds(total);
 		}
 
 		public Data.Day GetBestDay()
 		{
-			Data.Day bestDay = _wtData.Days
-				.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate)
-				.OrderByDescending(x => x.GrandTotal.TotalSeconds).First();
+			var bestDay = GetDaysInTimeRange().OrderByDescending(x => x.GrandTotal.TotalSeconds).First();
 
 			return bestDay;
 		}
@@ -99,7 +82,7 @@ namespace WTStats
 		{
 			var projects = new List<Project>();
 
-			foreach (var eDay in _wtData.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate))
+			foreach (var eDay in GetDaysInTimeRange())
 			{
 				eDay.Projects.ForEach(eProject =>
 				{
@@ -133,7 +116,7 @@ namespace WTStats
 		{
 			var data = new List<ProjectData>();
 
-			foreach (var eDay in _wtData.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate))
+			foreach (var eDay in GetDaysInTimeRange())
 			{
 				var property = eDay.GetType().GetProperty(dataType.ToString());
 
@@ -145,7 +128,9 @@ namespace WTStats
 
 			return data;
 		}
+		#endregion
 
+		#region Helpers
 		List<ProjectData> MergeProjectData(List<Data.Data> exportData, List<ProjectData> localData)
 		{
 			localData = localData ?? new List<ProjectData>();
@@ -173,5 +158,11 @@ namespace WTStats
 
 			return localData;
 		}
+
+		IEnumerable<Data.Day> GetDaysInTimeRange()
+		{
+			return _dataCore.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate);
+		}
+		#endregion
 	}
 }
