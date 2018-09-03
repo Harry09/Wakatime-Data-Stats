@@ -2,6 +2,8 @@ using Newtonsoft.Json;
 
 using System;
 
+using WTStats;
+
 namespace WTStats.Data
 {
     public class GrandTotal
@@ -25,7 +27,7 @@ namespace WTStats.Data
 		{
 			var ts = TimeSpan.FromSeconds(TotalSeconds);
 
-			return ts.ToString();
+			return ts.ToCustomString();
 		}
 	}
 }
