@@ -3,6 +3,7 @@ using System;
 using CommandLine;
 
 using WTStats.Core;
+using WTStats.Core.Generators;
 
 namespace WTStats.Generator
 {
@@ -18,7 +19,7 @@ namespace WTStats.Generator
 					mainGenerator.Directory = op.OutputDirectory;
 
 				if (op.GenerateTxt)
-					mainGenerator.AddGenerator<Generators.TxtGenerator>();
+					mainGenerator.AddGenerator<TxtGenerator>();
 
 				mainGenerator.Generate();
 			});
