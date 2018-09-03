@@ -13,10 +13,6 @@ namespace WTStats
 		Data.DataCore _dataCore;
 
 		#region Public fields
-		public DateTime StartDate { get; set; }
-
-		public DateTime EndDate { get; set; }
-
 		public enum DataType
 		{
 			Dependencies,
@@ -30,8 +26,6 @@ namespace WTStats
 		#region Constructors
 		private WTDataAnalyzer()
 		{
-			StartDate = DateTime.MinValue;
-			EndDate = DateTime.MaxValue;
 		}
 
 		public WTDataAnalyzer(string path) : this()
@@ -51,19 +45,42 @@ namespace WTStats
 		#endregion
 
 		#region Public methods
+		/// <summary>
+		/// Return date of first entry in data
+		/// </summary>
+		/// <returns>DataTime</returns>
 		public DateTime GetStartDate()
 		{
 			return DateTimeOffset.FromUnixTimeSeconds(_dataCore.Range.Start).DateTime;
 		}
 
+		/// <summary>
+		/// Returns date of last entry in data
+		/// </summary>
+		/// <returns>DateTime</returns>
 		public DateTime GetEndDate()
 		{
 			return DateTimeOffset.FromUnixTimeSeconds(_dataCore.Range.End).DateTime;
 		}
 
+		/// <summary>
+		/// Returns total time coding
+		/// </summary>
+		/// <returns>Total time coding</returns>
 		public TimeSpan GetTotalTimeCoding()
 		{
-			var total = GetDaysInTimeRange().Sum((Data.Day day) =>
+			return GetTotalTimeCoding(DateTime.MinValue, DateTime.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns total time coding in date range
+		/// </summary>
+		/// <param name="startDate">Start of range</param>
+		/// <param name="endDate">End of range</param>
+		/// <returns>Total time coding in data range</returns>
+		public TimeSpan GetTotalTimeCoding(DateTime startDate, DateTime endDate)
+		{
+			var total = GetDaysInTimeRange(startDate, endDate).Sum((Data.Day day) =>
 			{
 				return day.GrandTotal.TotalSeconds;
 			});
@@ -71,18 +88,48 @@ namespace WTStats
 			return TimeSpan.FromSeconds(total);
 		}
 
+		/// <summary>
+		/// Returns day with the greatest coding activity time
+		/// </summary>
+		/// <returns>Day data</returns>
 		public Data.Day GetBestDay()
 		{
-			var bestDay = GetDaysInTimeRange().OrderByDescending(x => x.GrandTotal.TotalSeconds).First();
+			return GetBestDay(DateTime.MinValue, DateTime.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns day with the greatest coding activity time in date range
+		/// </summary>
+		/// <param name="startDate">Start of range</param>
+		/// <param name="endDate">End of range</param>
+		/// <returns>Day data</returns>
+		public Data.Day GetBestDay(DateTime startDate, DateTime endDate)
+		{
+			var bestDay = GetDaysInTimeRange(startDate, endDate).OrderByDescending(x => x.GrandTotal.TotalSeconds).First();
 
 			return bestDay;
 		}
 
+		/// <summary>
+		/// Returns list of projects and data all time
+		/// </summary>
+		/// <returns>List of projects</returns>
 		public List<Project> GetProjects()
+		{
+			return GetProjects(DateTime.MinValue, DateTime.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns list of projects and data in specified date range
+		/// </summary>
+		/// <param name="startDate">Start of range</param>
+		/// <param name="endDate">End of range</param>
+		/// <returns>List of projects</returns>
+		public List<Project> GetProjects(DateTime startDate, DateTime endDate)
 		{
 			var projects = new List<Project>();
 
-			foreach (var eDay in GetDaysInTimeRange())
+			foreach (var eDay in GetDaysInTimeRange(startDate, endDate))
 			{
 				eDay.Projects.ForEach(eProject =>
 				{
@@ -112,11 +159,28 @@ namespace WTStats
 			return projects;
 		}
 
+		/// <summary>
+		/// Returns specified data
+		/// </summary>
+		/// <param name="dataType">Data type</param>
+		/// <returns>List of data</returns>
 		public List<ProjectData> Get(DataType dataType)
+		{
+			return Get(dataType, DateTime.MinValue, DateTime.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns specified data in date range
+		/// </summary>
+		/// <param name="dataType">Data type</param>
+		/// <param name="startDate">Start of range</param>
+		/// <param name="endDate">End of range</param>
+		/// <returns>List of data</returns>
+		public List<ProjectData> Get(DataType dataType, DateTime startDate, DateTime endDate)
 		{
 			var data = new List<ProjectData>();
 
-			foreach (var eDay in GetDaysInTimeRange())
+			foreach (var eDay in GetDaysInTimeRange(startDate, endDate))
 			{
 				var property = eDay.GetType().GetProperty(dataType.ToString());
 
@@ -159,9 +223,9 @@ namespace WTStats
 			return localData;
 		}
 
-		IEnumerable<Data.Day> GetDaysInTimeRange()
+		IEnumerable<Data.Day> GetDaysInTimeRange(DateTime startDate, DateTime endDate)
 		{
-			return _dataCore.Days.Where(x => x.Date.DateTime > StartDate && x.Date.DateTime < EndDate);
+			return _dataCore.Days.Where(x => x.Date.DateTime > startDate && x.Date.DateTime < endDate);
 		}
 		#endregion
 	}
