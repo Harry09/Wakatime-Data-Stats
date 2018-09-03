@@ -4,8 +4,8 @@ using System.Text;
 
 namespace WTStats.Core.Generators
 {
-	interface IGenerator
+	public interface IGenerator
 	{
-		GeneratedData Generate(WTDataAnalyzer wtDataAnalyzer, ILogger logger);
+		GeneratedData Generate(DataAnalyzer wtDataAnalyzer, ILogger logger);
 	}
 }

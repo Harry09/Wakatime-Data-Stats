@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace WTStats.Core
 {
-	public class WTDataAnalyzer
+	public class DataAnalyzer
     {
 		Data.DataCore _dataCore;
 
@@ -24,11 +24,11 @@ namespace WTStats.Core
 		#endregion
 
 		#region Constructors
-		private WTDataAnalyzer()
+		private DataAnalyzer()
 		{
 		}
 
-		public WTDataAnalyzer(string path) : this()
+		public DataAnalyzer(string path) : this()
 		{
 			if (!File.Exists(path))
 				throw new FileNotFoundException(path);
@@ -38,7 +38,7 @@ namespace WTStats.Core
 			_dataCore = JsonConvert.DeserializeObject<Data.DataCore>(json);
 		}
 
-		public WTDataAnalyzer(Data.DataCore wtData) : this()
+		public DataAnalyzer(Data.DataCore wtData) : this()
 		{
 			_dataCore = wtData;
 		}

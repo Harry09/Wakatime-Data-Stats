@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WTStats.Core
 {
-	interface ILogger
+	public interface ILogger
 	{
 		void Info(string txt, [CallerFilePath] string fileName = "", [CallerLineNumber] int lineNumber = 0);
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WTStats.Core
 {
-	class MainGenerator
+	public class MainGenerator
 	{
 		List<Generators.IGenerator> generators = new List<Generators.IGenerator>();
 
@@ -44,7 +44,7 @@ namespace WTStats.Core
 
 			logger.Info("Parsing data...");
 
-			var dataAnalyzer = new WTDataAnalyzer(filePath);
+			var dataAnalyzer = new DataAnalyzer(filePath);
 
 			logger.Info("Started generating...");
 

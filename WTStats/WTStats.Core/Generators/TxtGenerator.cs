@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WTStats.Core.Generators
 {
-	class TxtGenerator : IGenerator
+	public class TxtGenerator : IGenerator
 	{
 		StringBuilder sb = null;
 
@@ -15,15 +15,15 @@ namespace WTStats.Core.Generators
 		}
 
 		#region Public methods
-		public GeneratedData Generate(WTDataAnalyzer wtDataAnalyzer, ILogger logger)
+		public GeneratedData Generate(DataAnalyzer wtDataAnalyzer, ILogger logger)
 		{
 			sb = new StringBuilder();
 
 			GenerateBestDays(wtDataAnalyzer);
 			GenerateTotalTime(wtDataAnalyzer);
-			GenerateCommonData(WTDataAnalyzer.DataType.Editors, "Editors:", wtDataAnalyzer);
-			GenerateCommonData(WTDataAnalyzer.DataType.OperatingSystems, "Operating systems:", wtDataAnalyzer);
-			GenerateCommonData(WTDataAnalyzer.DataType.Languages, "Languages:", wtDataAnalyzer);
+			GenerateCommonData(DataAnalyzer.DataType.Editors, "Editors:", wtDataAnalyzer);
+			GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "Operating systems:", wtDataAnalyzer);
+			GenerateCommonData(DataAnalyzer.DataType.Languages, "Languages:", wtDataAnalyzer);
 			GenerateProjectList(wtDataAnalyzer);
 
 			var generatedData = new GeneratedData
@@ -39,7 +39,7 @@ namespace WTStats.Core.Generators
 		#endregion
 
 		#region Private methods
-		void GenerateBestDays(WTDataAnalyzer wtDataAnalyzer)
+		void GenerateBestDays(DataAnalyzer wtDataAnalyzer)
 		{
 			var startDate = wtDataAnalyzer.GetStartDate();
 			var endDate = wtDataAnalyzer.GetEndDate();
@@ -64,7 +64,7 @@ namespace WTStats.Core.Generators
 			sb.AppendLine();
 		}
 
-		void GenerateTotalTime(WTDataAnalyzer wtDataAnalyzer)
+		void GenerateTotalTime(DataAnalyzer wtDataAnalyzer)
 		{
 			var startDate = wtDataAnalyzer.GetStartDate();
 			var endDate = wtDataAnalyzer.GetEndDate();
@@ -87,7 +87,7 @@ namespace WTStats.Core.Generators
 			sb.AppendLine();
 		}
 
-		void GenerateCommonData(WTDataAnalyzer.DataType dataType, string name, WTDataAnalyzer wtDataAnalyzer)
+		void GenerateCommonData(DataAnalyzer.DataType dataType, string name, DataAnalyzer wtDataAnalyzer)
 		{
 			AppendSeparator();
 
@@ -98,7 +98,7 @@ namespace WTStats.Core.Generators
 
 		}
 
-		void GenerateProjectList(WTDataAnalyzer wtDataAnalyzer)
+		void GenerateProjectList(DataAnalyzer wtDataAnalyzer)
 		{
 			AppendSeparator();
 

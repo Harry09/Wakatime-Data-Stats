@@ -5,7 +5,7 @@ using System.IO;
 
 namespace WTStats.Core
 {
-	class GeneratedData
+	public class GeneratedData
 	{
 		public string FileName { get; set; }
 
