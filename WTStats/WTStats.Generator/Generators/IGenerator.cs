@@ -6,6 +6,6 @@ namespace WTStats.Generator.Generators
 {
 	interface IGenerator
 	{
-		void Generate(WTDataAnalyzer wtDataAnalyzer, ILogger logger);
+		GeneratedData Generate(WTDataAnalyzer wtDataAnalyzer, ILogger logger);
 	}
 }

@@ -52,8 +52,14 @@ namespace WTStats.Generator
 			{
 				logger.Info($"Invoking {generator.GetType().Name}...");
 
-				generator.Generate(dataAnalyzer, logger);
+				var data = generator.Generate(dataAnalyzer, logger);
+
+				logger.Info($"Saving data to {data.FileName}...");
+
+				data.Save(Directory);
 			}
+
+			logger.Info("Done!");
 		}
 	}
 }
