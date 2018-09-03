@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WTStats.Generator.Generators
+namespace WTStats.Core.Generators
 {
 	interface IGenerator
 	{

@@ -2,7 +2,7 @@ using System;
 
 using Newtonsoft.Json;
 
-namespace WTStats.Data
+namespace WTStats.Core.Data
 {
     public class User
     {

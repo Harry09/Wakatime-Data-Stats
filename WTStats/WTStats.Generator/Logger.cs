@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+using WTStats.Core;
+
 namespace WTStats.Generator
 {
 	class Logger : ILogger

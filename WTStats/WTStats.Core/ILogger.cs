@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace WTStats.Generator
+namespace WTStats.Core
 {
 	interface ILogger
 	{

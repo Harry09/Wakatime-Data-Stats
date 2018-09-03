@@ -2,9 +2,9 @@ using Newtonsoft.Json;
 
 using System;
 
-using WTStats;
+using WTStats.Core;
 
-namespace WTStats.Data
+namespace WTStats.Core.Data
 {
     public class GrandTotal
     {

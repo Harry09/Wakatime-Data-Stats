@@ -1,6 +1,6 @@
 using System;
 
-namespace WTStats
+namespace WTStats.Core
 {
     public static class Helpers
     {

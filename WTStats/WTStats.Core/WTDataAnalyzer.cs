@@ -6,7 +6,7 @@ using System.IO;
 
 using Newtonsoft.Json;
 
-namespace WTStats
+namespace WTStats.Core
 {
 	public class WTDataAnalyzer
     {

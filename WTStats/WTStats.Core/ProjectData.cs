@@ -1,4 +1,4 @@
-﻿namespace WTStats
+﻿namespace WTStats.Core
 {
 	public class ProjectData
 	{

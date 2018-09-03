@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WTStats
+namespace WTStats.Core
 {
 	public class Project
 	{

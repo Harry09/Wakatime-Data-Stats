@@ -2,6 +2,8 @@ using System;
 
 using CommandLine;
 
+using WTStats.Core;
+
 namespace WTStats.Generator
 {
 	class Program

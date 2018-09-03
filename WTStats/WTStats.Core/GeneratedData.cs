@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace WTStats.Generator
+namespace WTStats.Core
 {
 	class GeneratedData
 	{

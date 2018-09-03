@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace WTStats.Data
+namespace WTStats.Core.Data
 {
     public class Day
     {
