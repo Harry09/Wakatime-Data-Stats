@@ -19,20 +19,33 @@ namespace WTStats.Core
 			this.dataFilePath = dataFilePath;
 		}
 
-		public void AddGenerator<Generator>() where Generator : Generators.IGenerator, new()
+		/// <summary>
+		/// Adds generator
+		/// </summary>
+		/// <typeparam name="Generator">Generator class which inheric from <see cref="IGenerator"/></typeparam>
+		public void AddGenerator<Generator>() where Generator : IGenerator, new()
 		{
 			logger.Info($"Adding {typeof(Generator).Name}...");
 
 			generators.Add(new Generator());
 		}
 
-		public void AddGenerator<Generator>(Func<Generator> ctor) where Generator : Generators.IGenerator
+		/// <summary>
+		/// Adds generator with custom constructor
+		/// </summary>
+		/// <typeparam name="Generator">Generator class which inheric from <see cref="IGenerator"/></typeparam>
+		/// <param name="ctor">Constructor for generator class</param>
+		public void AddGenerator<Generator>(Func<Generator> ctor) where Generator : IGenerator
 		{
 			logger.Info($"Adding {typeof(Generator).Name} with custom constructor...");
 
 			generators.Add(ctor.Invoke());
 		}
 
+		/// <summary>
+		/// Invokes generators to return list of generated data
+		/// </summary>
+		/// <returns>Data from generators</returns>
 		public IEnumerable<GeneratorData> Generate()
 		{
 			logger.Info("Loading Wakatime Data...");
