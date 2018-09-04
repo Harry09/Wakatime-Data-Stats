@@ -2,21 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using WTStats.Core.Generators;
+
 namespace WTStats.Core
 {
 	public class MainGenerator
 	{
-		List<Generators.IGenerator> generators = new List<Generators.IGenerator>();
+		List<IGenerator> generators = new List<IGenerator>();
 
 		readonly ILogger logger;
-		readonly string filePath;
+		readonly string dataFilePath;
 
-		public string Directory { get; set; }
-
-		public MainGenerator(string filePath, ILogger logger)
+		public MainGenerator(string dataFilePath, ILogger logger)
 		{
 			this.logger = logger;
-			this.filePath = filePath;
+			this.dataFilePath = dataFilePath;
 		}
 
 		public void AddGenerator<Generator>() where Generator : Generators.IGenerator, new()
@@ -29,24 +29,27 @@ namespace WTStats.Core
 		public void AddGenerator<Generator>(Func<Generator> ctor) where Generator : Generators.IGenerator
 		{
 			logger.Info($"Adding {typeof(Generator).Name} with custom constructor...");
+
 			generators.Add(ctor.Invoke());
 		}
 
-		public void Generate()
+		public IEnumerable<GeneratorData> Generate()
 		{
 			logger.Info("Loading Wakatime Data...");
 
-			if (string.IsNullOrWhiteSpace(filePath))
+			if (string.IsNullOrWhiteSpace(dataFilePath))
 			{
 				logger.Error("You passed empty file path!");
-				return;
+				return null;
 			}
 
 			logger.Info("Parsing data...");
 
-			var dataAnalyzer = new DataAnalyzer(filePath);
+			var dataAnalyzer = new DataAnalyzer(dataFilePath);
 
 			logger.Info("Started generating...");
+
+			var generatorDatas = new List<GeneratorData>();
 
 			foreach (var generator in generators)
 			{
@@ -54,12 +57,12 @@ namespace WTStats.Core
 
 				var data = generator.Generate(dataAnalyzer, logger);
 
-				logger.Info($"Saving data to {data.FileName}...");
-
-				data.Save(Directory);
+				generatorDatas.Add(data);
 			}
 
 			logger.Info("Done!");
+
+			return generatorDatas;
 		}
 	}
 }

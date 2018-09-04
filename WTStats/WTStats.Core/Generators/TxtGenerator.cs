@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WTStats.Core.Generators
 {
-	public class TxtGenerator : IGenerator
+	public class TxtGenerator : IGenerator 
 	{
 		StringBuilder sb = null;
 
@@ -15,38 +15,41 @@ namespace WTStats.Core.Generators
 		}
 
 		#region Public methods
-		public GeneratedData Generate(DataAnalyzer wtDataAnalyzer, ILogger logger)
+		public GeneratorData Generate(DataAnalyzer dataAnalyzer, ILogger logger)
 		{
 			sb = new StringBuilder();
 
-			GenerateBestDays(wtDataAnalyzer);
-			GenerateTotalTime(wtDataAnalyzer);
-			GenerateCommonData(DataAnalyzer.DataType.Editors, "Editors:", wtDataAnalyzer);
-			GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "Operating systems:", wtDataAnalyzer);
-			GenerateCommonData(DataAnalyzer.DataType.Languages, "Languages:", wtDataAnalyzer);
-			GenerateProjectList(wtDataAnalyzer);
+			GenerateBestDays(dataAnalyzer);
+			GenerateTotalTime(dataAnalyzer);
+			GenerateCommonData(DataAnalyzer.DataType.Editors, "Editors:", dataAnalyzer);
+			GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "Operating systems:", dataAnalyzer);
+			GenerateCommonData(DataAnalyzer.DataType.Languages, "Languages:", dataAnalyzer);
+			GenerateProjectList(dataAnalyzer);
 
-			var generatedData = new GeneratedData
+			var date = DateTime.Now;
+
+			var dataAction = new GeneratorData
 			{
-				Data = sb.ToString(),
-				FileName = "generated_data.txt"
+				DataName = $"data_{date:yyyyMMddHHmmss}",
+				FileExtension = "txt",
+				Data = sb.ToString()
 			};
 
 			sb = null;
 
-			return generatedData;
+			return dataAction;
 		}
 		#endregion
 
 		#region Private methods
-		void GenerateBestDays(DataAnalyzer wtDataAnalyzer)
+		void GenerateBestDays(DataAnalyzer dataAnalyzer)
 		{
-			var startDate = wtDataAnalyzer.GetStartDate();
-			var endDate = wtDataAnalyzer.GetEndDate();
+			var startDate = dataAnalyzer.GetStartDate();
+			var endDate = dataAnalyzer.GetEndDate();
 
 			AppendSeparator();
 
-			sb.AppendLine($"Best day ever: {wtDataAnalyzer.GetBestDay().GrandTotal.ToString()}");
+			sb.AppendLine($"Best day ever: {dataAnalyzer.GetBestDay().GrandTotal.ToString()}");
 
 			sb.AppendLine();
 
@@ -54,7 +57,7 @@ namespace WTStats.Core.Generators
 
 			for (int year = startDate.Year; year <= endDate.Year; year++)
 			{
-				var bestDay = wtDataAnalyzer.GetBestDay(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
+				var bestDay = dataAnalyzer.GetBestDay(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
 
 				sb.AppendLine($"{year}: {bestDay.GrandTotal}");
 
@@ -64,14 +67,14 @@ namespace WTStats.Core.Generators
 			sb.AppendLine();
 		}
 
-		void GenerateTotalTime(DataAnalyzer wtDataAnalyzer)
+		void GenerateTotalTime(DataAnalyzer dataAnalyzer)
 		{
-			var startDate = wtDataAnalyzer.GetStartDate();
-			var endDate = wtDataAnalyzer.GetEndDate();
+			var startDate = dataAnalyzer.GetStartDate();
+			var endDate = dataAnalyzer.GetEndDate();
 
 			AppendSeparator();
 
-			sb.AppendLine($"Total coding activity time: {wtDataAnalyzer.GetTotalTimeCoding().ToCustomString()}");
+			sb.AppendLine($"Total coding activity time: {dataAnalyzer.GetTotalTimeCoding().ToCustomString()}");
 
 			sb.AppendLine();
 
@@ -79,7 +82,7 @@ namespace WTStats.Core.Generators
 
 			for (int year = startDate.Year; year <= endDate.Year; year++)
 			{
-				var total = wtDataAnalyzer.GetTotalTimeCoding(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
+				var total = dataAnalyzer.GetTotalTimeCoding(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
 
 				sb.AppendLine($"{year}: {total.ToCustomString()}");
 			}
@@ -87,24 +90,24 @@ namespace WTStats.Core.Generators
 			sb.AppendLine();
 		}
 
-		void GenerateCommonData(DataAnalyzer.DataType dataType, string name, DataAnalyzer wtDataAnalyzer)
+		void GenerateCommonData(DataAnalyzer.DataType dataType, string name, DataAnalyzer dataAnalyzer)
 		{
 			AppendSeparator();
 
 			sb.AppendLine(name);
-			PrintProjectDataList(wtDataAnalyzer.Get(dataType).OrderByDescending(x => x.TotalTime));
+			PrintProjectDataList(dataAnalyzer.Get(dataType).OrderByDescending(x => x.TotalTime));
 
 			sb.AppendLine();
 
 		}
 
-		void GenerateProjectList(DataAnalyzer wtDataAnalyzer)
+		void GenerateProjectList(DataAnalyzer dataAnalyzer)
 		{
 			AppendSeparator();
 
 			sb.AppendLine("Projects:");
 
-			var data = wtDataAnalyzer.GetProjects().OrderByDescending(m => m.TotalTime).Select(x => new ProjectData { Name = x.Name, TotalTime = x.TotalTime });
+			var data = dataAnalyzer.GetProjects().OrderByDescending(m => m.TotalTime).Select(x => new ProjectData { Name = x.Name, TotalTime = x.TotalTime });
 
 			PrintProjectDataList(data);
 
