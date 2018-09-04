@@ -1,6 +1,6 @@
 using CommandLine;
 
-namespace WTStats.Generator
+namespace WTStats
 {
 	class CommandLineOptions
 	{

@@ -6,7 +6,7 @@ using System.Text;
 
 using WTStats.Core;
 
-namespace WTStats.Generator
+namespace WTStats
 {
 	class Logger : ILogger
 	{
