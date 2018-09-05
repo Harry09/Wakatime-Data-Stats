@@ -6,8 +6,8 @@ using WTStats.Core;
 
 namespace WTStats.Core.Data
 {
-    public class GrandTotal
-    {
+	public class GrandTotal
+	{
 		[JsonProperty("digital")]
 		public string Digital { get; set; }
 
@@ -23,11 +23,12 @@ namespace WTStats.Core.Data
 		[JsonProperty("total_seconds")]
 		public long TotalSeconds { get; set; }
 
+		[JsonIgnore]
+		public TimeSpan TimeSpan { get { return TimeSpan.FromSeconds(TotalSeconds); } }
+
 		public override string ToString()
 		{
-			var ts = TimeSpan.FromSeconds(TotalSeconds);
-
-			return ts.ToCustomString();
+			return TimeSpan.ToCustomString();
 		}
 	}
 }

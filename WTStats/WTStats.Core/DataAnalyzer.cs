@@ -144,7 +144,7 @@ namespace WTStats.Core
 						newProject = true;
 					}
 
-					lProject.TotalTime += eProject.GrandTotal.TotalSeconds;
+					lProject.TotalSeconds += eProject.GrandTotal.TotalSeconds;
 
 					lProject.Languages = MergeProjectData(eProject.Languages, lProject.Languages);
 					lProject.Editors = MergeProjectData(eProject.Editors, lProject.Editors);
@@ -212,7 +212,7 @@ namespace WTStats.Core
 					newData = true;
 				}
 
-				lData.TotalTime += eData.TotalSeconds;
+				lData.TotalSeconds += eData.TotalSeconds;
 
 				if (newData)
 				{
