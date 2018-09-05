@@ -1,10 +1,12 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 using CommandLine;
 
 using WTStats.Core;
 using WTStats.Core.Generators;
+
 
 namespace WTStats
 {
@@ -21,7 +23,11 @@ namespace WTStats
 				if (op.GenerateTxt)
 					mainGenerator.AddGenerator<TxtGenerator>();
 
+				if (op.GenerateHTML)
+					mainGenerator.AddGenerator<HTMLGenerator>();
+
 				var datas = mainGenerator.Generate();
+
 
 				if (datas != null)
 				{
@@ -43,6 +49,8 @@ namespace WTStats
 					}
 				}
 			});
+
+			Console.ReadKey();
 		}
 	}
 }

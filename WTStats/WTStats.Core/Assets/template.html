@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Wakatime Stats</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wakatime Stats</h1>
+
+        <hr>
+
+        <div>
+            <h3>Best day</h3>
+            <canvas id="bestdayChart"></canvas>
+        </div>
+
+        <br>
+
+        <div>
+            <h3>Total code activity</h3>
+            <canvas id="totalTimeChart"></canvas>
+        </div>
+
+        <br>
+
+        <div>
+            <h3>Editors</h3>
+            <canvas id="editorsChart"></canvas>
+        </div>
+
+        <br>
+
+        <div>
+            <h3>Operating systems</h3>
+            <canvas id="osChart"></canvas>
+        </div>
+
+        <br>
+
+        <div>
+            <h3>Languages</h3>
+            <canvas id="languagesChart"></canvas>
+        </div>
+
+        <br>
+
+        <div>
+            <h3>Projects</h3>
+            <canvas id="projectsChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+    <script>
+        function random(min, max) {
+            return Math.round(min + (Math.random() * (max - min)));
+        }
+
+        function randomScalingFactor() {
+            return "rgba(" + random(100, 200) + ", " + random(100, 200) + ", " + random(100, 200) + ", 0.5)";
+        }
+  
+        //@Charts.Data
+
+        var option = Chart.helpers.clone(Chart.defaults.horizontalBar);
+
+        Chart.helpers.extend(option, {
+            maxBarThickness: 30
+        });
+
+        var bestdayChart    = document.getElementById('bestdayChart');
+        var totalTimeChart  = document.getElementById('totalTimeChart');
+        var editorsChart    = document.getElementById('editorsChart');
+        var osChart         = document.getElementById('osChart');
+        var languagesChart  = document.getElementById('languagesChart');
+        var projectsChart   = document.getElementById('projectsChart');
+
+        var bestdayCtx = bestdayChart.getContext('2d');
+        var totalTimeCtx = totalTimeChart.getContext('2d');
+        var editorsCtx = editorsChart.getContext('2d');
+        var osCtx = osChart.getContext('2d');
+        var languagesCtx = languagesChart.getContext('2d');
+        var projectsCtx = projectsChart.getContext('2d');
+
+        bestdayChart.height = bestDayData.labels.length * 10;
+        totalTimeChart.height = totalTimeData.labels.length * 10;
+        editorsChart.height = editorsData.labels.length * 10;
+        osChart.height = osData.labels.length * 20;
+        languagesChart.height = languagesData.labels.length * 10;
+        projectsChart.height = projectsData.labels.length * 10;
+
+        new Chart(bestdayCtx, {
+            type: 'horizontalBar',
+            data: bestDayData,
+            options: option
+        });
+
+        new Chart(totalTimeCtx, {
+            type: 'horizontalBar',
+            data: totalTimeData,
+            options: option
+        });
+
+        new Chart(editorsCtx, {
+            type: 'horizontalBar',
+            data: editorsData,
+            options: option
+        });
+
+        new Chart(osCtx, {
+            type: 'horizontalBar',
+            data: osData,
+            options: option
+        });
+
+        new Chart(languagesCtx, {
+            type: 'horizontalBar',
+            data: languagesData,
+            options: option
+        });
+
+        new Chart(projectsCtx, {
+            type: 'horizontalBar',
+            data: projectsData,
+            options: option
+        });
+
+
+    </script>
+</body >
+</html >

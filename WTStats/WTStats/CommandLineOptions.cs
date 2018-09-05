@@ -16,7 +16,7 @@ namespace WTStats
 		[Option("genmd", HelpText = "Generates markdown")]
 		public bool GenerateMarkdown { get; set; }
 
-		[Option("genhtml", HelpText = "Generates HTML")]
+		[Option("genhtml", HelpText = "Generates HTML", Default = true)]
 		public bool GenerateHTML { get; set; }
 	}
 }

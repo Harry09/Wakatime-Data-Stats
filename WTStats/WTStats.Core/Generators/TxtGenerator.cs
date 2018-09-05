@@ -9,11 +9,6 @@ namespace WTStats.Core.Generators
 	{
 		StringBuilder sb = null;
 
-		public TxtGenerator()
-		{
-
-		}
-
 		#region Public methods
 		public GeneratorData Generate(DataAnalyzer dataAnalyzer, ILogger logger)
 		{
@@ -26,11 +21,9 @@ namespace WTStats.Core.Generators
 			GenerateCommonData(DataAnalyzer.DataType.Languages, "Languages:", dataAnalyzer);
 			GenerateProjectList(dataAnalyzer);
 
-			var date = DateTime.Now;
-
 			var dataAction = new GeneratorData
 			{
-				DataName = $"data_{date:yyyyMMddHHmmss}",
+				DataName = $"data_{DateTime.Now:yyyyMMddHHmmss}",
 				FileExtension = "txt",
 				Data = sb.ToString()
 			};
@@ -60,8 +53,6 @@ namespace WTStats.Core.Generators
 				var bestDay = dataAnalyzer.GetBestDay(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
 
 				sb.AppendLine($"{year}: {bestDay.GrandTotal}");
-
-				startDate.AddYears(1);
 			}
 
 			sb.AppendLine();
@@ -95,7 +86,7 @@ namespace WTStats.Core.Generators
 			AppendSeparator();
 
 			sb.AppendLine(name);
-			PrintProjectDataList(dataAnalyzer.Get(dataType).OrderByDescending(x => x.TotalTime));
+			PrintProjectDataList(dataAnalyzer.Get(dataType).OrderByDescending(x => x.TotalSeconds));
 
 			sb.AppendLine();
 
@@ -107,7 +98,7 @@ namespace WTStats.Core.Generators
 
 			sb.AppendLine("Projects:");
 
-			var data = dataAnalyzer.GetProjects().OrderByDescending(m => m.TotalTime).Select(x => new ProjectData { Name = x.Name, TotalTime = x.TotalTime });
+			var data = dataAnalyzer.GetProjects().OrderByDescending(m => m.TotalSeconds).Cast<ProjectData>();
 
 			PrintProjectDataList(data);
 
@@ -120,7 +111,7 @@ namespace WTStats.Core.Generators
 		{
 			foreach (var data in datas)
 			{
-				sb.AppendLine($"{data.Name}: {TimeSpan.FromSeconds(data.TotalTime).ToCustomString()}");
+				sb.AppendLine($"{data.Name}: {TimeSpan.FromSeconds(data.TotalSeconds).ToCustomString()}");
 			}
 		}
 

@@ -6,6 +6,6 @@ namespace WTStats.Core.Generators
 {
 	public interface IGenerator
 	{
-		GeneratorData Generate(DataAnalyzer wtDataAnalyzer, ILogger logger);
+		GeneratorData Generate(DataAnalyzer dataAnalyzer, ILogger logger);
 	}
 }
