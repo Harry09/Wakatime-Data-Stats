@@ -54,6 +54,7 @@ namespace WTStats.Core.Generators
 
 			datas.Add(GenerateBestDay(dataAnalyzer));
 			datas.Add(GenerateTotalTime(dataAnalyzer));
+			datas.Add(GenerateDailyAverage(dataAnalyzer));
 			datas.Add(GenerateCommonData(DataAnalyzer.DataType.Editors, "editorsData", dataAnalyzer));
 			datas.Add(GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "osData", dataAnalyzer));
 			datas.Add(GenerateCommonData(DataAnalyzer.DataType.Languages, "languagesData", dataAnalyzer));
@@ -81,8 +82,6 @@ namespace WTStats.Core.Generators
 			var chartJsData = new ChartJsData();
 			chartJsData.DataName = "bestDayData";
 
-			chartJsData.Data.Add("All time", dataAnalyzer.GetBestDay().GrandTotal.TimeSpan.TotalHours);
-
 			for (int year = startDate.Year; year <= endDate.Year; year++)
 			{
 				var bestDay = dataAnalyzer.GetBestDay(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
@@ -106,6 +105,26 @@ namespace WTStats.Core.Generators
 			for (int year = startDate.Year; year <= endDate.Year; year++)
 			{
 				var total = dataAnalyzer.GetTotalTimeCoding(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
+
+				chartJsData.Data.Add(year.ToString(), total.TotalHours);
+			}
+
+			return chartJsData;
+		}
+
+		ChartJsData GenerateDailyAverage(DataAnalyzer dataAnalyzer)
+		{
+			var startDate = dataAnalyzer.GetStartDate();
+			var endDate = dataAnalyzer.GetEndDate();
+
+			var chartJsData = new ChartJsData();
+			chartJsData.DataName = "averageData";
+
+			chartJsData.Data.Add("All time", dataAnalyzer.GetDailyAverage().TotalHours);
+
+			for (int year = startDate.Year; year <= endDate.Year; year++)
+			{
+				var total = dataAnalyzer.GetDailyAverage(new DateTime(year, 1, 1), new DateTime(year, 12, 31));
 
 				chartJsData.Data.Add(year.ToString(), total.TotalHours);
 			}

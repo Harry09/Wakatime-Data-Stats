@@ -89,6 +89,35 @@ namespace WTStats.Core
 		}
 
 		/// <summary>
+		/// Returns total daily average
+		/// </summary>
+		/// <returns>Daily average time</returns>
+		public TimeSpan GetDailyAverage()
+		{
+			return GetDailyAverage(DateTime.MinValue, DateTime.MaxValue);
+		}
+
+		/// <summary>
+		/// Returns daily average time in date range
+		/// </summary>
+		/// <param name="startDate">Start of range</param>
+		/// <param name="endDate">End of range</param>
+		/// <returns>Daily average time</returns>
+		public TimeSpan GetDailyAverage(DateTime startDate, DateTime endDate)
+		{
+			var days = GetDaysInTimeRange(startDate, endDate);
+
+			var total = days.Sum((Data.Day day) =>
+			{
+				return day.GrandTotal.TotalSeconds;
+			});
+
+			total /= days.Count();
+
+			return TimeSpan.FromSeconds(total);
+		}
+
+		/// <summary>
 		/// Returns day with the greatest coding activity time
 		/// </summary>
 		/// <returns>Day data</returns>

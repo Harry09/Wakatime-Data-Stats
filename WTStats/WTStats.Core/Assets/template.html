@@ -38,6 +38,13 @@
         <br>
 
         <div>
+            <h3>Average activity</h3>
+            <canvas id="averageChart"></canvas>
+        </div>
+
+        <br>
+
+        <div>
             <h3>Editors</h3>
             <canvas id="editorsChart"></canvas>
         </div>
@@ -97,6 +104,7 @@
 
         var bestdayChart    = document.getElementById('bestdayChart');
         var totalTimeChart  = document.getElementById('totalTimeChart');
+        var averageChart    = document.getElementById('averageChart');
         var editorsChart    = document.getElementById('editorsChart');
         var osChart         = document.getElementById('osChart');
         var languagesChart  = document.getElementById('languagesChart');
@@ -104,6 +112,7 @@
 
         var bestdayCtx = bestdayChart.getContext('2d');
         var totalTimeCtx = totalTimeChart.getContext('2d');
+        var averageCtx = averageChart.getContext('2d');
         var editorsCtx = editorsChart.getContext('2d');
         var osCtx = osChart.getContext('2d');
         var languagesCtx = languagesChart.getContext('2d');
@@ -111,6 +120,7 @@
 
         bestdayChart.height = getCanvasHeight(bestDayData.labels.length);
         totalTimeChart.height = getCanvasHeight(totalTimeData.labels.length);
+        averageChart.height = getCanvasHeight(averageData.labels.length);
         editorsChart.height = getCanvasHeight(editorsData.labels.length);
         osChart.height = getCanvasHeight(osData.labels.length);
         languagesChart.height = getCanvasHeight(languagesData.labels.length);
@@ -125,6 +135,12 @@
         new Chart(totalTimeCtx, {
             type: 'horizontalBar',
             data: totalTimeData,
+            options: option
+        });
+
+        new Chart(averageCtx, {
+            type: 'horizontalBar',
+            data: averageData,
             options: option
         });
 
