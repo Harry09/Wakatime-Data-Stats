@@ -1,6 +1,6 @@
 using CommandLine;
 
-namespace WTStats
+namespace WTStats.Console
 {
 	class CommandLineOptions
 	{

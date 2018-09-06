@@ -6,7 +6,7 @@ using System.Text;
 
 using WTStats.Core;
 
-namespace WTStats
+namespace WTStats.Console
 {
 	class Logger : ILogger
 	{
@@ -14,9 +14,9 @@ namespace WTStats
 		{
 #if DEBUG
 			fileName = Path.GetFileName(fileName);
-			Console.WriteLine($"[{type}][{fileName}:{lineNumber}] {txt}");
+			System.Console.WriteLine($"[{type}][{fileName}:{lineNumber}] {txt}");
 #else
-			Console.WriteLine($"[{type}] {txt}");
+			System.Console.WriteLine($"[{type}] {txt}");
 #endif
 		}
 

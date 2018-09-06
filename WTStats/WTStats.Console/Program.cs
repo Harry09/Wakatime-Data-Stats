@@ -8,7 +8,7 @@ using WTStats.Core;
 using WTStats.Core.Generators;
 
 
-namespace WTStats
+namespace WTStats.Console
 {
 	class Program
 	{
