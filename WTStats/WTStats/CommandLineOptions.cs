@@ -10,13 +10,10 @@ namespace WTStats
 		[Option('o', "output", HelpText = "Output directory", Default = "")]
 		public string OutputDirectory { get; set; }
 
-		[Option("gentxt", HelpText = "Generates txt file")]
+		[Option("gen-txt", HelpText = "Generates txt file")]
 		public bool GenerateTxt { get; set; }
 
-		[Option("genmd", HelpText = "Generates markdown")]
-		public bool GenerateMarkdown { get; set; }
-
-		[Option("genhtml", HelpText = "Generates HTML", Default = true)]
+		[Option("gen-html", HelpText = "Generates HTML", Default = true)]
 		public bool GenerateHTML { get; set; }
 	}
 }

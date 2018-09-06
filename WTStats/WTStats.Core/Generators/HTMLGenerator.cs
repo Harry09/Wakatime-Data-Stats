@@ -50,15 +50,16 @@ namespace WTStats.Core.Generators
 
 			string htmlCode = File.ReadAllText(TemplatePath);
 
-			var datas = new List<ChartJsData>();
-
-			datas.Add(GenerateBestDay(dataAnalyzer));
-			datas.Add(GenerateTotalTime(dataAnalyzer));
-			datas.Add(GenerateDailyAverage(dataAnalyzer));
-			datas.Add(GenerateCommonData(DataAnalyzer.DataType.Editors, "editorsData", dataAnalyzer));
-			datas.Add(GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "osData", dataAnalyzer));
-			datas.Add(GenerateCommonData(DataAnalyzer.DataType.Languages, "languagesData", dataAnalyzer));
-			datas.Add(GenerateProjectsList(dataAnalyzer));
+			var datas = new List<ChartJsData>
+			{
+				GenerateBestDay(dataAnalyzer),
+				GenerateTotalTime(dataAnalyzer),
+				GenerateDailyAverage(dataAnalyzer),
+				GenerateCommonData(DataAnalyzer.DataType.Editors, "editorsData", dataAnalyzer),
+				GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "osData", dataAnalyzer),
+				GenerateCommonData(DataAnalyzer.DataType.Languages, "languagesData", dataAnalyzer),
+				GenerateProjectsList(dataAnalyzer)
+			};
 
 			PutChartsData(ref htmlCode, datas);
 
