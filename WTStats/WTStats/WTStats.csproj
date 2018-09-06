@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,5 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\WTStats.Core\WTStats.Core.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /y ..\WTStats.Core\Assets\template.html $(OutDir)Assets\template.html" />
+  </Target>
 
 </Project>

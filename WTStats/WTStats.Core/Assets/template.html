@@ -74,13 +74,25 @@
         function randomScalingFactor() {
             return "rgba(" + random(100, 200) + ", " + random(100, 200) + ", " + random(100, 200) + ", 0.5)";
         }
-  
+
+        function getCanvasHeight(tableSize) {
+            var multipler = 1;
+
+            if (tableSize > 0 && tableSize < 3) {
+                multipler = 4 - tableSize;
+            }
+
+            return tableSize * 10 * multipler;
+        }
+
         //@Charts.Data
 
         var option = Chart.helpers.clone(Chart.defaults.horizontalBar);
 
         Chart.helpers.extend(option, {
-            maxBarThickness: 30
+            legend: {
+                display: false
+            }
         });
 
         var bestdayChart    = document.getElementById('bestdayChart');
@@ -97,12 +109,12 @@
         var languagesCtx = languagesChart.getContext('2d');
         var projectsCtx = projectsChart.getContext('2d');
 
-        bestdayChart.height = bestDayData.labels.length * 10;
-        totalTimeChart.height = totalTimeData.labels.length * 10;
-        editorsChart.height = editorsData.labels.length * 10;
-        osChart.height = osData.labels.length * 20;
-        languagesChart.height = languagesData.labels.length * 10;
-        projectsChart.height = projectsData.labels.length * 10;
+        bestdayChart.height = getCanvasHeight(bestDayData.labels.length);
+        totalTimeChart.height = getCanvasHeight(totalTimeData.labels.length);
+        editorsChart.height = getCanvasHeight(editorsData.labels.length);
+        osChart.height = getCanvasHeight(osData.labels.length);
+        languagesChart.height = getCanvasHeight(languagesData.labels.length);
+        projectsChart.height = getCanvasHeight(projectsData.labels.length);
 
         new Chart(bestdayCtx, {
             type: 'horizontalBar',

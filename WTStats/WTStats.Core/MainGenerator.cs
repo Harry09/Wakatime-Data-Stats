@@ -68,9 +68,24 @@ namespace WTStats.Core
 			{
 				logger.Info($"Invoking {generator.GetType().Name}...");
 
-				var data = generator.Generate(dataAnalyzer, logger);
+				try
+				{
+					var data = generator.Generate(dataAnalyzer, logger);
 
-				generatorDatas.Add(data);
+					if (data is null)
+					{
+						logger.Warning("Returned null value");
+
+						continue;
+					}
+
+					generatorDatas.Add(data);
+				}
+				catch (Exception ex)
+				{
+					logger.Error(ex.Message);
+				}
+
 			}
 
 			logger.Info("Done!");

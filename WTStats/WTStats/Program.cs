@@ -49,8 +49,6 @@ namespace WTStats
 					}
 				}
 			});
-
-			Console.ReadKey();
 		}
 	}
 }
