@@ -28,7 +28,6 @@ namespace WTStats.Console
 
 				var datas = mainGenerator.Generate();
 
-
 				if (datas != null)
 				{
 					foreach (var data in datas)
@@ -41,7 +40,6 @@ namespace WTStats.Console
 						}
 
 						filePath += $"{data.DataName}.{data.FileExtension}";
-
 
 						logger.Info($"Saving {filePath}...");
 

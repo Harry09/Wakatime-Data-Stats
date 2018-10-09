@@ -11,12 +11,16 @@ namespace WTStats.Core
 		List<IGenerator> generators = new List<IGenerator>();
 
 		readonly ILogger logger;
-		readonly string dataFilePath;
+
+		/// <summary>
+		/// Path to data file
+		/// </summary>
+		public string DataFilePath { get; set; }
 
 		public MainGenerator(string dataFilePath, ILogger logger)
 		{
 			this.logger = logger;
-			this.dataFilePath = dataFilePath;
+			DataFilePath = dataFilePath;
 		}
 
 		/// <summary>
@@ -50,7 +54,7 @@ namespace WTStats.Core
 		{
 			logger.Info("Loading Wakatime Data...");
 
-			if (string.IsNullOrWhiteSpace(dataFilePath))
+			if (string.IsNullOrWhiteSpace(DataFilePath))
 			{
 				logger.Error("You passed empty file path!");
 				return null;
@@ -58,7 +62,7 @@ namespace WTStats.Core
 
 			logger.Info("Parsing data...");
 
-			var dataAnalyzer = new DataAnalyzer(dataFilePath);
+			var dataAnalyzer = new DataAnalyzer(DataFilePath);
 
 			logger.Info("Started generating...");
 

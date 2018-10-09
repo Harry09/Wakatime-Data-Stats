@@ -8,18 +8,20 @@ namespace WTStats.Core.Generators
 	public class TxtGenerator : IGenerator 
 	{
 		StringBuilder sb = null;
+		DataAnalyzer dataAnalyzer = null;
 
 		#region Public methods
 		public GeneratorData Generate(DataAnalyzer dataAnalyzer, ILogger logger)
 		{
 			sb = new StringBuilder();
+			this.dataAnalyzer = dataAnalyzer;
 
-			GenerateBestDays(dataAnalyzer);
-			GenerateTotalTime(dataAnalyzer);
-			GenerateCommonData(DataAnalyzer.DataType.Editors, "Editors:", dataAnalyzer);
-			GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "Operating systems:", dataAnalyzer);
-			GenerateCommonData(DataAnalyzer.DataType.Languages, "Languages:", dataAnalyzer);
-			GenerateProjectList(dataAnalyzer);
+			GenerateBestDays();
+			GenerateTotalTime();
+			GenerateCommonData(DataAnalyzer.DataType.Editors, "Editors:");
+			GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "Operating systems:");
+			GenerateCommonData(DataAnalyzer.DataType.Languages, "Languages:");
+			GenerateProjectList();
 
 			var dataAction = new GeneratorData
 			{
@@ -35,7 +37,7 @@ namespace WTStats.Core.Generators
 		#endregion
 
 		#region Private methods
-		void GenerateBestDays(DataAnalyzer dataAnalyzer)
+		void GenerateBestDays()
 		{
 			var startDate = dataAnalyzer.GetStartDate();
 			var endDate = dataAnalyzer.GetEndDate();
@@ -58,7 +60,7 @@ namespace WTStats.Core.Generators
 			sb.AppendLine();
 		}
 
-		void GenerateTotalTime(DataAnalyzer dataAnalyzer)
+		void GenerateTotalTime()
 		{
 			var startDate = dataAnalyzer.GetStartDate();
 			var endDate = dataAnalyzer.GetEndDate();
@@ -81,7 +83,7 @@ namespace WTStats.Core.Generators
 			sb.AppendLine();
 		}
 
-		void GenerateCommonData(DataAnalyzer.DataType dataType, string name, DataAnalyzer dataAnalyzer)
+		void GenerateCommonData(DataAnalyzer.DataType dataType, string name)
 		{
 			AppendSeparator();
 
@@ -92,7 +94,7 @@ namespace WTStats.Core.Generators
 
 		}
 
-		void GenerateProjectList(DataAnalyzer dataAnalyzer)
+		void GenerateProjectList()
 		{
 			AppendSeparator();
 

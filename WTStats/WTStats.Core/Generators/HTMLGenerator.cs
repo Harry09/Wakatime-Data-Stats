@@ -40,6 +40,7 @@ namespace WTStats.Core.Generators
 	public class HTMLGenerator : IGenerator
 	{
 		static readonly string TemplatePath = "Assets/template.html";
+		DataAnalyzer dataAnalyzer = null;
 
 		public GeneratorData Generate(DataAnalyzer dataAnalyzer, ILogger logger)
 		{
@@ -48,17 +49,19 @@ namespace WTStats.Core.Generators
 				throw new FileNotFoundException("Cannot find HTML template!");
 			}
 
+			this.dataAnalyzer = dataAnalyzer;
+
 			string htmlCode = File.ReadAllText(TemplatePath);
 
 			var datas = new List<ChartJsData>
 			{
-				GenerateBestDay(dataAnalyzer),
-				GenerateTotalTime(dataAnalyzer),
-				GenerateDailyAverage(dataAnalyzer),
-				GenerateCommonData(DataAnalyzer.DataType.Editors, "editorsData", dataAnalyzer),
-				GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "osData", dataAnalyzer),
-				GenerateCommonData(DataAnalyzer.DataType.Languages, "languagesData", dataAnalyzer),
-				GenerateProjectsList(dataAnalyzer)
+				GenerateBestDay(),
+				GenerateTotalTime(),
+				GenerateDailyAverage(),
+				GenerateCommonData(DataAnalyzer.DataType.Editors, "editorsData"),
+				GenerateCommonData(DataAnalyzer.DataType.OperatingSystems, "osData"),
+				GenerateCommonData(DataAnalyzer.DataType.Languages, "languagesData"),
+				GenerateProjectsList()
 			};
 
 			PutChartsData(ref htmlCode, datas);
@@ -75,7 +78,7 @@ namespace WTStats.Core.Generators
 
 		#region Private methods
 		#region Generators
-		ChartJsData GenerateBestDay(DataAnalyzer dataAnalyzer)
+		ChartJsData GenerateBestDay()
 		{
 			var startDate = dataAnalyzer.GetStartDate();
 			var endDate = dataAnalyzer.GetEndDate();
@@ -93,7 +96,7 @@ namespace WTStats.Core.Generators
 			return chartJsData;
 		}
 
-		ChartJsData GenerateTotalTime(DataAnalyzer dataAnalyzer)
+		ChartJsData GenerateTotalTime()
 		{
 			var startDate = dataAnalyzer.GetStartDate();
 			var endDate = dataAnalyzer.GetEndDate();
@@ -113,7 +116,7 @@ namespace WTStats.Core.Generators
 			return chartJsData;
 		}
 
-		ChartJsData GenerateDailyAverage(DataAnalyzer dataAnalyzer)
+		ChartJsData GenerateDailyAverage()
 		{
 			var startDate = dataAnalyzer.GetStartDate();
 			var endDate = dataAnalyzer.GetEndDate();
@@ -133,7 +136,7 @@ namespace WTStats.Core.Generators
 			return chartJsData;
 		}
 
-		ChartJsData GenerateCommonData(DataAnalyzer.DataType dataType, string name, DataAnalyzer dataAnalyzer)
+		ChartJsData GenerateCommonData(DataAnalyzer.DataType dataType, string name)
 		{
 			var chartJsData = new ChartJsData();
 			chartJsData.DataName = name;
@@ -143,7 +146,7 @@ namespace WTStats.Core.Generators
 			return chartJsData;
 		}
 
-		ChartJsData GenerateProjectsList(DataAnalyzer dataAnalyzer)
+		ChartJsData GenerateProjectsList()
 		{
 			var chartJsData = new ChartJsData();
 			chartJsData.DataName = "projectsData";
@@ -180,6 +183,5 @@ namespace WTStats.Core.Generators
 		}
 		#endregion
 		#endregion
-
 	}
 }
