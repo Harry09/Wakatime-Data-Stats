@@ -22,16 +22,15 @@ namespace WTStats.Core.Generators
 		{
 			var values = Data.Values.Select(x => x.ToString("F2", CultureInfo.InvariantCulture));
 
-			string data = @"
-			" + DataName + @" = {
-
-				labels: [ '" + string.Join("', '", Data.Keys) + @"' ],
-				datasets: [{
+			string data = $@"
+			{DataName} = {{
+				labels: [ '{string.Join("', '", Data.Keys)}' ],
+				datasets: [{{
 					label: 'Hours',
-					data: [ " + string.Join(", ", values) + @" ],
+					data: [ {string.Join(", ", values)} ],
 					backgroundColor: randomScalingFactor()
-				}]
-			};";
+				}}]
+			}};";
 
 			return data;
 		}
