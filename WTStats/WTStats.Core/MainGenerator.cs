@@ -17,7 +17,7 @@ namespace WTStats.Core
 		/// </summary>
 		public string DataFilePath { get; set; }
 
-		public MainGenerator(string dataFilePath, ILogger logger)
+		public MainGenerator(string dataFilePath, ILogger logger = null)
 		{
 			this.logger = logger;
 			DataFilePath = dataFilePath;
@@ -29,7 +29,7 @@ namespace WTStats.Core
 		/// <typeparam name="Generator">Generator class which inheric from <see cref="IGenerator"/></typeparam>
 		public void AddGenerator<Generator>() where Generator : IGenerator, new()
 		{
-			logger.Info($"Adding {typeof(Generator).Name}...");
+			logger?.Info($"Adding {typeof(Generator).Name}...");
 
 			generators.Add(new Generator());
 		}
@@ -41,7 +41,7 @@ namespace WTStats.Core
 		/// <param name="ctor">Constructor for generator class</param>
 		public void AddGenerator<Generator>(Func<Generator> ctor) where Generator : IGenerator
 		{
-			logger.Info($"Adding {typeof(Generator).Name} with custom constructor...");
+			logger?.Info($"Adding {typeof(Generator).Name} with custom constructor...");
 
 			generators.Add(ctor.Invoke());
 		}
@@ -52,25 +52,25 @@ namespace WTStats.Core
 		/// <returns>Data from generators</returns>
 		public IEnumerable<GeneratorData> Generate()
 		{
-			logger.Info("Loading Wakatime Data...");
+			logger?.Info("Loading Wakatime Data...");
 
 			if (string.IsNullOrWhiteSpace(DataFilePath))
 			{
-				logger.Error("You passed empty file path!");
+				logger?.Error("You passed empty file path!");
 				return null;
 			}
 
-			logger.Info("Parsing data...");
+			logger?.Info("Parsing data...");
 
 			var dataAnalyzer = new DataAnalyzer(DataFilePath);
 
-			logger.Info("Started generating...");
+			logger?.Info("Started generating...");
 
 			var generatorDatas = new List<GeneratorData>();
 
 			foreach (var generator in generators)
 			{
-				logger.Info($"Invoking {generator.GetType().Name}...");
+				logger?.Info($"Invoking {generator.GetType().Name}...");
 
 				try
 				{
@@ -78,7 +78,7 @@ namespace WTStats.Core
 
 					if (data is null)
 					{
-						logger.Warning("Returned null value");
+						logger?.Warning("Returned null value");
 
 						continue;
 					}
@@ -87,12 +87,15 @@ namespace WTStats.Core
 				}
 				catch (Exception ex)
 				{
-					logger.Error(ex.Message);
+					if (logger is null)
+						throw;
+					else
+						logger?.Error(ex.Message);
 				}
 
 			}
 
-			logger.Info("Done!");
+			logger?.Info("Done!");
 
 			return generatorDatas;
 		}
