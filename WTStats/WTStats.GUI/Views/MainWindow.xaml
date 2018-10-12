@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:WTStats.GUI.ViewModels;assembly=WTStats.GUI"
+        Icon="resm:WTStats.GUI.Assets.avalonia-logo.ico"
+        Title="WTStats.GUI" Width="400" Height="400">
+
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
+
+  <Grid RowDefinitions="Auto, Auto, Auto, Auto, *, Auto" Margin="24">
+    <TextBlock Grid.Row="0" Text="WTStats GUI" FontSize="24" HorizontalAlignment="Center" />
+
+    <StackPanel Grid.Row="1">
+      <CheckBox Margin="0 20 0 0" IsChecked="{Binding GenerateHTML}">Generate HTML</CheckBox>
+      <CheckBox Margin="0 20 0 0" IsChecked="{Binding GenerateTxt}">Generate Txt</CheckBox>
+    </StackPanel>
+
+    <StackPanel Grid.Row="2" Margin="0 20 0 0">
+      <TextBlock Text="Input file:" />
+      <Grid ColumnDefinitions="*, Auto" Margin="0 0 8 0">
+        <TextBox Grid.Column="0" Margin="0 0 16 0" Text="{Binding DataFilePath}"/>
+        <Button Grid.Column="1" Command="{Binding OnBrowseDataFile}">...</Button>
+      </Grid>
+    </StackPanel>
+
+    <StackPanel Grid.Row="3" Margin="0 20 0 0">
+      <TextBlock Text="Output directory:" />
+      <Grid ColumnDefinitions="*, Auto" Margin="0 0 8 0">
+        <TextBox Grid.Column="0" Margin="0 0 16 0" Text="{Binding OutputDirectory}"/>
+        <Button Grid.Column="1" Command="{Binding OnBrowseOutputDirectory}">...</Button>
+      </Grid>
+    </StackPanel>
+
+    <Button Grid.Row="5" Margin="0 20 0 0" Command="{Binding OnGenerate}">Generate</Button>
+  </Grid>
+</Window>

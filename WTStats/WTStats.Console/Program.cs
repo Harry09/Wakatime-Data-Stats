@@ -28,23 +28,23 @@ namespace WTStats.Console
 
 				var datas = mainGenerator.Generate();
 
-				if (datas != null)
+				if (datas is null)
+					return;
+
+				foreach (var data in datas)
 				{
-					foreach (var data in datas)
+					string filePath = string.Empty;
+
+					if (!string.IsNullOrWhiteSpace(op.OutputDirectory))
 					{
-						string filePath = string.Empty;
-
-						if (!string.IsNullOrWhiteSpace(op.OutputDirectory))
-						{
-							filePath = op.OutputDirectory + "/";
-						}
-
-						filePath += $"{data.DataName}.{data.FileExtension}";
-
-						logger.Info($"Saving {filePath}...");
-
-						File.WriteAllText(filePath, data.Data);
+						filePath = op.OutputDirectory + "/";
 					}
+
+					filePath += $"{data.DataName}.{data.FileExtension}";
+
+					logger.Info($"Saving {filePath}...");
+
+					File.WriteAllText(filePath, data.Data);
 				}
 			});
 		}
